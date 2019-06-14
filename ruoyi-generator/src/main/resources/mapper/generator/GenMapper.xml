@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.generator.mapper.GenMapper">
+
+	<resultMap type="TableInfo" id="TableInfoResult">
+		<id     property="tableName"      column="table_name"      />
+		<result property="tableComment"   column="table_comment"   />
+		<result property="createTime"     column="create_time"     />
+		<result property="updateTime"     column="update_time"     />
+	</resultMap>
+	
+	<resultMap type="ColumnInfo" id="ColumnInfoResult">
+		<id     property="columnName"     column="column_name"      />
+		<result property="dataType"       column="data_type"        />
+		<result property="columnComment"  column="column_comment"   />
+	</resultMap>
+	
+	<sql id="selectGenVo">
+        SELECT cast(D.NAME as nvarchar) as table_name,cast(F.VALUE as nvarchar) as table_comment,
+	    crdate as create_time,refdate as update_time FROM    SYSOBJECTS   D
+		inner   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID
+		AND   F.MINOR_ID=0 AND   D.XTYPE='U' AND  D.NAME!='DTPROPERTIES'
+    </sql>
+
+	<select id="selectTableList" parameterType="TableInfo" resultMap="TableInfoResult">
+		<include refid="selectGenVo"/>
+		<if test="tableName != null and tableName != ''">
+			AND table_name like '%'+#{tableName}+ '%'
+		</if>
+		<if test="tableComment != null and tableComment != ''">
+			AND table_comment like '%'+#{tableComment}+ '%'
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			and datediff(dd,#{params.beginTime},crdate)>= 0
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			and datediff(dd,crdate,#{params.endTime})>= 0
+		</if>
+	</select>
+	
+	<select id="selectTableByName" parameterType="String" resultMap="TableInfoResult">
+		<include refid="selectGenVo"/>
+		and D.NAME = #{tableName}
+	</select>
+	
+	<select id="selectTableColumnsByName" parameterType="String" resultMap="ColumnInfoResult">
+		SELECT
+			cast(A.NAME as nvarchar) as column_name,
+			cast(B.NAME as nvarchar) as data_type,
+			cast(G.[VALUE] as nvarchar) as column_comment
+		FROM   SYSCOLUMNS   A
+			LEFT   JOIN   SYSTYPES   B   ON   A.XTYPE=B.XUSERTYPE
+			INNER   JOIN   SYSOBJECTS   D   ON   A.ID=D.ID     AND   D.XTYPE='U'   AND     D.NAME!='DTPROPERTIES'
+			LEFT   JOIN   SYS.EXTENDED_PROPERTIES G   ON   A.ID=G.MAJOR_ID   AND   A.COLID=G.MINOR_ID
+			LEFT   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID   AND   F.MINOR_ID   =0
+		where   D.NAME = #{tableName}
+		ORDER   BY   A.COLORDER
+	</select>
+
+</mapper> 
