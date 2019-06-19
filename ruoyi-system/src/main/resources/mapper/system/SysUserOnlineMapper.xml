@@ -16,17 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="startTimestamp"    column="start_timestamp"   />
 		<result property="lastAccessTime"    column="last_access_time"  />
 		<result property="expireTime"        column="expire_time"       />
-		<!--<association property="session" javaType="OnlineSession" resultMap="OnlineSessionResult" />-->
 	</resultMap>
-
-	<!--<resultMap type="OnlineSession" id="OnlineSessionResult">-->
-		<!--<result property="host"              column="ipaddr"            />-->
-		<!--<result property="browser"           column="browser"           />-->
-		<!--<result property="os"                column="os"                />-->
-		<!--<result property="status"            column="status"            />-->
-	<!--</resultMap>-->
-
-
 	<sql id="selectOnlineVo">
        select sessionId, login_name, dept_name, ipaddr, login_location, browser, os, status, start_timestamp, last_access_time, expire_time 
 	   from sys_user_online

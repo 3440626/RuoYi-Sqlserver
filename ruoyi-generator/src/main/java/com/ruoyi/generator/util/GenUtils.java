@@ -237,5 +237,6 @@ public class GenUtils
         javaTypeMap.put("date", "Date");
         javaTypeMap.put("datetime", "Date");
         javaTypeMap.put("timestamp", "Date");
+        javaTypeMap.put("nvarchar", "String");
     }
 }
