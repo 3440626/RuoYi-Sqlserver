@@ -1,8 +1,10 @@
 package com.ruoyi.system.domain;
 
+import javax.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
@@ -15,7 +17,7 @@ public class SysPost extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 岗位序号 */
-    @Excel(name = "岗位序号")
+    @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
     private Long postId;
 
     /** 岗位编码 */
@@ -27,7 +29,7 @@ public class SysPost extends BaseEntity
     private String postName;
 
     /** 岗位排序 */
-    @Excel(name = "岗位排序")
+    @Excel(name = "岗位排序", cellType = ColumnType.NUMERIC)
     private String postSort;
 
     /** 状态（0正常 1停用） */
@@ -47,6 +49,8 @@ public class SysPost extends BaseEntity
         this.postId = postId;
     }
 
+    @NotBlank(message = "岗位编码不能为空")
+    @Size(min = 0, max = 64, message = "岗位编码长度不能超过64个字符")
     public String getPostCode()
     {
         return postCode;
@@ -57,6 +61,8 @@ public class SysPost extends BaseEntity
         this.postCode = postCode;
     }
 
+    @NotBlank(message = "岗位名称不能为空")
+    @Size(min = 0, max = 50, message = "岗位名称长度不能超过50个字符")
     public String getPostName()
     {
         return postName;
@@ -67,6 +73,7 @@ public class SysPost extends BaseEntity
         this.postName = postName;
     }
 
+    @NotBlank(message = "显示顺序不能为空")
     public String getPostSort()
     {
         return postSort;

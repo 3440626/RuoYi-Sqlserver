@@ -8,14 +8,14 @@
     <input id="userId" name="userId" type="hidden" th:value="${user.userId}" />
     <section class="section-content">
     <div class="row">
-        <div class="col-xs-3 pr5">
+        <div class="col-sm-3 pr5">
             <div class="ibox float-e-margins">
                 <div class="ibox-title ibox-title-gray dashboard-header gray-bg">
                     <h5>个人资料</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="text-center">
-                        <p><img class="img-circle img-lg" th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{/profile/avatar/} + ${user.avatar}"></p>
+                        <p><img class="img-circle img-lg" th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{${user.avatar}}"></p>
                         <p><a href="javascript:avatar()">修改头像</a></p>
                     </div>
                     <ul class="list-group list-group-striped">
@@ -44,7 +44,7 @@
             </div>
         </div>
         
-        <div class="col-xs-9" style="padding-left: 0px">
+        <div class="col-sm-9 about">
             <div class="ibox float-e-margins">
                 <div class="ibox-title ibox-title-gray dashboard-header">
                     <h5>基本资料</h5>

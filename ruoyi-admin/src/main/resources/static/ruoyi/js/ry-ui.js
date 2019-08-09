@@ -4,8 +4,9 @@
  */
 (function ($) {
     $.extend({
-    	_treeTable: {},
     	_tree: {},
+    	btTable: {},
+    	bttTable: {},
     	// 表格封装处理
     	table: {
             _option: {},
@@ -24,6 +25,7 @@
         		    toolbar: "toolbar",
         		    striped: false,
         		    escape: false,
+        		    firstLoad: true,
         		    showFooter: false,
         		    search: false,
                     showSearch: true,
@@ -43,6 +45,7 @@
         		};
             	var options = $.extend(defaults, options);
                 $.table._option = options;
+                $.btTable = $('#' + options.id);
                 $.table.initEvent();
                 $('#' + options.id).bootstrapTable({
                     url: options.url,                                   // 请求后台的URL（*）
@@ -59,6 +62,7 @@
                     pageNumber: 1,                                      // 初始化加载第一页，默认第一页
                     pageSize: options.pageSize,                         // 每页的记录行数（*） 
                     pageList: options.pageList,                         // 可供选择的每页的行数（*）
+                    firstLoad: options.firstLoad,                       // 是否首次请求加载数据，对于数据较大可以配置false
                     escape: options.escape,                             // 转义HTML字符串
                     showFooter: options.showFooter,                     // 是否显示表尾
                     iconSize: 'outline',                                // 图标大小：undefined默认的按钮尺寸 xs超小按钮sm小按钮lg大按钮
@@ -72,6 +76,7 @@
                     showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
                     showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
                     showExport: options.showExport,                     // 是否支持导出文件
+                    uniqueId: options.uniqueId,                         // 唯 一的标识符
                     clickToSelect: options.clickToSelect,				// 是否启用点击选中行
                     detailView: options.detailView,                     // 是否启用显示细节视图
                     onClickRow: options.onClickRow,                     // 点击某行触发的事件
@@ -83,6 +88,7 @@
                     fixedNumber: options.fixedNumber,                   // 列冻结的个数（左侧）
                     rightFixedColumns: options.rightFixedColumns,       // 是否启用冻结列（右侧）
                     rightFixedNumber: options.rightFixedNumber,         // 列冻结的个数（右侧）
+                    onReorderRow: options.onReorderRow,                 // 当拖拽结束后处理函数
                     queryParams: options.queryParams,                   // 传递参数（*）
                     rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
                     columns: options.columns,                           // 显示列信息（*）
@@ -130,15 +136,16 @@
             // 初始化事件
             initEvent: function(data) {
             	// 触发行点击事件 加载成功事件
-            	$("#" + $.table._option.id).on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table load-success.bs.table", function () {
+            	$.btTable.on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table load-success.bs.table", function () {
             		// 工具栏按钮控制
             		var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
-            		$('#' + $.table._option.toolbar + ' .btn-del').toggleClass('disabled', !rows.length);
-            		$('#' + $.table._option.toolbar + ' .btn-edit').toggleClass('disabled', rows.length!=1);
-            		$('#' + $.table._option.toolbar + ' .btn-detail').toggleClass('disabled', rows.length!=1);
+            		// 非多个禁用
+            		$('#' + $.table._option.toolbar + ' .multiple').toggleClass('disabled', !rows.length);
+            		// 非单个禁用
+            		$('#' + $.table._option.toolbar + ' .single').toggleClass('disabled', rows.length!=1);
             	});
             	// 绑定选中事件、取消事件、全部选中、全部取消
-            	$("#" + $.table._option.id).on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rows) {
+            	$.btTable.on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rows) {
             		// 复选框分页保留保存选中数组
             		var rowIds = $.table.affectedRowIds(rows);
             		if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
@@ -147,9 +154,11 @@
             		}
             	});
             	// 图片预览事件
-            	$("#" + $.table._option.id).on('click', '.img-circle', function() {
+            	$.btTable.on('click', '.img-circle', function() {
     			    var src = $(this).attr('src');
     			    var target = $(this).data('target');
+    			    var height = $(this).data('height');
+    			    var width = $(this).data('width');
     			    if($.common.equals("self", target)) {
     			    	layer.open({
         			        title: false,
@@ -157,12 +166,18 @@
         			        closeBtn: true,
         			        shadeClose: true,
         			        area: ['auto', 'auto'],
-        			        content: "<img src='" + src + "' />"
+        			        content: "<img src='" + src + "' height='" + height + "' width='" + width + "'/>"
         			    });
     			    } else if ($.common.equals("blank", target)) {
     			        window.open(src);
     			    }
     			});
+            	// 单击tooltip复制文本
+            	$.btTable.on('click', '.tooltip-show', function() {
+            		var input = $(this).prev();
+            		input.select();
+            		document.execCommand("copy");
+            	});
             },
             // 当所有数据被加载时触发
             onLoadSuccess: function(data) {
@@ -179,19 +194,23 @@
 	        },
             // 序列号生成
             serialNumber: function (index) {
-				var table = $('#' + $.table._option.id).bootstrapTable('getOptions');
+				var table = $.btTable.bootstrapTable('getOptions');
 				var pageSize = table.pageSize;
 				var pageNumber = table.pageNumber;
 				return pageSize * (pageNumber - 1) + index + 1;
 			},
-			// 列超出指定长度浮动提示
+			// 列超出指定长度浮动提示（单击文本复制）
 			tooltip: function (value, length) {
 				var _length = $.common.isEmpty(length) ? 20 : length;
 				var _text = "";
 				var _value = $.common.nullToStr(value);
 				if (_value.length > _length) {
 					_text = _value.substr(0, _length) + "...";
-					return $.common.sprintf("<a href='#' class='tooltip-show' data-toggle='tooltip' title='%s'>%s</a>", _value, _text);
+					_value = _value.replace(/\'/g,"’");
+					var actions = [];
+					actions.push($.common.sprintf('<input id="tooltip-show" style="opacity: 0;position: absolute;z-index:-1" type="text" value="%s"/>', _value));
+                	actions.push($.common.sprintf("<a href='###' class='tooltip-show' data-toggle='tooltip' title='%s'>%s</a>", _value, _text));
+					return actions.join('');
 				} else {
 					_text = _value;
 					return _text;
@@ -210,12 +229,17 @@
 				return actions.join('');
 			},
 			// 图片预览
-			imageView: function (value, path, target) {
-				var _path = $.common.isEmpty(path) ? '/profile/upload' : path;
+			imageView: function (value, height, width, target) {
+				if ($.common.isEmpty(width)) {
+                	width = 'auto';
+                }
+                if ($.common.isEmpty(height)) {
+                	height = 'auto';
+                }
 				// blank or self
 				var _target = $.common.isEmpty(target) ? 'self' : target;
 				if ($.common.isNotEmpty(value)) {
-					return $.common.sprintf("<img class='img-circle img-xs' data-target='%s' src='%s/%s'/>", _target, _path, value);
+					return $.common.sprintf("<img class='img-circle img-xs' data-height='%s' data-width='%s' data-target='%s' src='%s'/>", width, height, _target, value);
 				} else {
 					return $.common.nullToStr(value);
 				}
@@ -223,7 +247,7 @@
             // 搜索-默认第一个form
             search: function(formId, data) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
-    		    var params = $("#" + $.table._option.id).bootstrapTable('getOptions');
+    		    var params = $.btTable.bootstrapTable('getOptions');
     		    params.queryParams = function(params) {
                     var search = $.common.formToJSON(currentId);
                     if($.common.isNotEmpty(data)){
@@ -238,7 +262,7 @@
                     search.isAsc = params.order;
     		        return search;
     		    }
-    		    $("#" + $.table._option.id).bootstrapTable('refresh', params);
+    		    $.btTable.bootstrapTable('refresh', params);
     		},
     		// 导出数据
     		exportExcel: function(formId) {
@@ -323,13 +347,13 @@
             },
             // 刷新表格
             refresh: function() {
-                $("#" + $.table._option.id).bootstrapTable('refresh', {
+            	$.btTable.bootstrapTable('refresh', {
                     silent: true
                 });
             },
             // 查询表格指定列值
             selectColumns: function(column) {
-            	var rows = $.map($('#' + $.table._option.id).bootstrapTable('getSelections'), function (row) {
+            	var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
         	        return row[column];
         	    });
             	if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
@@ -352,7 +376,7 @@
             },
             // 查询表格首列值
             selectFirstColumns: function() {
-            	var rows = $.map($('#' + $.table._option.id).bootstrapTable('getSelections'), function (row) {
+            	var rows = $.map($.btTable.bootstrapTable('getSelections'), function (row) {
         	        return row[$.table._option.columns[1].field];
         	    });
             	if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
@@ -365,7 +389,7 @@
             	var actions = [];
                 $.each(datas, function(index, dict) {
                     if (dict.dictValue == ('' + value)) {
-                    	var listClass = $.common.equals("default", dict.listClass) ? "" : "badge badge-" + dict.listClass;
+                    	var listClass = $.common.equals("default", dict.listClass) || $.common.isEmpty(dict.listClass) ? "" : "badge badge-" + dict.listClass;
                     	actions.push($.common.sprintf("<span class='%s'>%s</span>", listClass, dict.dictLabel));
                         return false;
                     }
@@ -374,11 +398,11 @@
             },
             // 显示表格指定列
             showColumn: function(column) {
-                $("#" + $.table._option.id).bootstrapTable('showColumn', column);
+            	$.btTable.bootstrapTable('showColumn', column);
             },
             // 隐藏表格指定列
             hideColumn: function(column) {
-            	$("#" + $.table._option.id).bootstrapTable('hideColumn', column);
+            	$.btTable.bootstrapTable('hideColumn', column);
             }
         },
         // 表格树封装处理
@@ -394,6 +418,7 @@
         		    toolbar: "toolbar",
         		    striped: false,
         		    expandColumn: 1,
+        		    showSearch: true,
         		    showRefresh: true,
         			showColumns: true,
         			expandAll: true,
@@ -401,10 +426,10 @@
         		};
             	var options = $.extend(defaults, options);
                 $.table._option = options;
-                var treeTable = $('#' + options.id).bootstrapTreeTable({
+                $.bttTable = $('#' + options.id).bootstrapTreeTable({
                 	code: options.code,                                 // 用于设置父子关系
         		    parentCode: options.parentCode,                     // 用于设置父子关系
-        	    	type: 'get',                                        // 请求方式（*）
+        	    	type: 'post',                                        // 请求方式（*）
         	        url: options.url,                                   // 请求后台的URL（*）
         	        ajaxParams: options.ajaxParams,                     // 请求数据的ajax的data属性
         	        rootIdValue: options.rootIdValue,                   // 设置指定根节点id值
@@ -413,30 +438,40 @@
         			striped: options.striped,                           // 是否显示行间隔色
         			bordered: true,                                     // 是否显示边框
         			toolbar: '#' + options.toolbar,                     // 指定工作栏
+        			showSearch: options.showSearch,                     // 是否显示检索信息
         			showRefresh: options.showRefresh,                   // 是否显示刷新按钮
         			showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
         			expandAll: options.expandAll,                       // 是否全部展开
         			expandFirst: options.expandFirst,                   // 是否默认第一级展开--expandAll为false时生效
-        	        columns: options.columns
+        	        columns: options.columns,                           // 显示列信息（*）
+        	        responseHandler: $.treeTable.responseHandler        // 当所有数据被加载时触发处理函数
         	    });
-                $._treeTable = treeTable;
             },
             // 条件查询
             search: function(formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	var params = $.common.formToJSON(currentId);
-            	$._treeTable.bootstrapTreeTable('refresh', params);
+                $.bttTable.bootstrapTreeTable('refresh', params);
             },
             // 刷新
             refresh: function() {
-            	$._treeTable.bootstrapTreeTable('refresh');
+            	$.bttTable.bootstrapTreeTable('refresh');
             },
             // 查询表格树指定列值
             selectColumns: function(column) {
-            	var rows = $.map($('#' + $.table._option.id).bootstrapTreeTable('getSelections'), function (row) {
+            	var rows = $.map($.bttTable.bootstrapTreeTable('getSelections'), function (row) {
         	        return row[column];
         	    });
             	return $.common.uniqueFn(rows);
+            },
+            // 请求获取数据后处理回调函数，校验异常状态提醒
+            responseHandler: function(data) {
+            	if (data.code != undefined && data.code != 0) {
+            		$.modal.alertWarning(data.msg);
+            		return [];
+                } else {
+                    return data;
+                }
             },
         },
         // 表单封装处理
@@ -445,6 +480,7 @@
     		reset: function(formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	$("#" + currentId)[0].reset();
+                $.btTable.bootstrapTable('refresh');
             },
             // 获取选中复选框项
             selectCheckeds: function(name) {
@@ -568,16 +604,16 @@
             	}
             	if ($.common.isEmpty(title)) {
                     title = false;
-                };
+                }
                 if ($.common.isEmpty(url)) {
                     url = "/404.html";
-                };
+                }
                 if ($.common.isEmpty(width)) {
                 	width = 800;
-                };
+                }
                 if ($.common.isEmpty(height)) {
                 	height = ($(window).height() - 50);
-                };
+                }
                 if ($.common.isEmpty(callback)) {
                     callback = function(index, layero) {
                         var iframeWin = layero.find('iframe')[0];
@@ -622,7 +658,7 @@
                     fix: false,
                     area: [_width + 'px', _height + 'px'],
                     content: _url,
-                    shadeClose: true,
+                    shadeClose: $.common.isEmpty(options.shadeClose) ? true : options.shadeClose,
                     skin: options.skin,
                     btn: $.common.isEmpty(options.btn) ? _btn : options.btn,
                     yes: options.yes,
@@ -640,16 +676,16 @@
             	}
             	if ($.common.isEmpty(title)) {
                     title = false;
-                };
+                }
                 if ($.common.isEmpty(url)) {
                     url = "/404.html";
-                };
+                }
                 if ($.common.isEmpty(width)) {
                 	width = 800;
-                };
+                }
                 if ($.common.isEmpty(height)) {
                 	height = ($(window).height() - 50);
-                };
+                }
                 var index = layer.open({
             		type: 2,
             		area: [width + 'px', height + 'px'],
@@ -676,9 +712,15 @@
             openTab: function (title, url) {
             	createMenuItem(url, title);
             },
+            // 选卡页同一页签打开
+            parentTab: function (title, url) {
+            	var dataId = window.frameElement.getAttribute('data-id');
+            	createMenuItem(url, title);
+            	closeItem(dataId);
+            },
             // 关闭选项卡
-            closeTab: function () {
-            	closeItem();
+            closeTab: function (dataId) {
+            	closeItem(dataId);
             },
             // 禁用按钮
             disable: function() {
@@ -813,13 +855,13 @@
             },
             // 添加访问地址
             addUrl: function(id) {
-            	var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
+            	var url = $.common.isEmpty(id) ? $.table._option.createUrl.replace("{id}", "") : $.table._option.createUrl.replace("{id}", id);
                 return url;
             },
             // 修改信息
             edit: function(id) {
             	if($.common.isEmpty(id) && $.table._option.type == table_type.bootstrapTreeTable) {
-            		var row = $('#' + $.table._option.id).bootstrapTreeTable('getSelections')[0];
+            		var row = $.bttTable.bootstrapTreeTable('getSelections')[0];
                 	if ($.common.isEmpty(row)) {
             			$.modal.alertWarning("请至少选择一条记录");
             			return;

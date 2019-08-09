@@ -131,9 +131,9 @@ $(function() {
 		var dataExpand = $.common.isEmpty($.table._option.expandAll) ? true : $.table._option.expandAll;
 		expandFlag = $.common.isEmpty(expandFlag) ? dataExpand : expandFlag;
 	    if (!expandFlag) {
-	        $('#' + $.table._option.id).bootstrapTreeTable('expandAll');
+	    	$.bttTable.bootstrapTreeTable('expandAll');
 	    } else {
-	        $('#' + $.table._option.id).bootstrapTreeTable('collapseAll');
+	    	$.bttTable.bootstrapTreeTable('collapseAll');
 	    }
 	    expandFlag = expandFlag ? false: true;
 	})
@@ -155,8 +155,16 @@ var refreshItem = function(){
 }
 
 /** 关闭选项卡 */
-var closeItem = function(){
+var closeItem = function(dataId){
 	var topWindow = $(window.parent.document);
+	if($.common.isNotEmpty(dataId)){
+		window.parent.$.modal.closeLoading();
+		// 根据dataId关闭指定选项卡
+		$('.menuTab[data-id="' + dataId + '"]', topWindow).remove();
+		// 移除相应tab对应的内容区
+		$('.mainContent .RuoYi_iframe[data-id="' + dataId + '"]', topWindow).remove();
+		return;
+	}
 	var panelUrl = window.frameElement.getAttribute('data-panel');
 	$('.page-tabs-content .active i', topWindow).click();
 	if($.common.isNotEmpty(panelUrl)){

@@ -73,7 +73,7 @@
 				<label class="col-sm-3 control-label">菜单状态：</label>
 				<div class="col-sm-8">
 				    <div class="radio-box" th:each="dict : ${@dict.getType('sys_show_hide')}">
-						<input type="radio" th:id="${dict.dictCode}" name="visible" th:value="${dict.dictValue}" th:checked="${dict.isDefault == 'Y' ? true : false}">
+						<input type="radio" th:id="${dict.dictCode}" name="visible" th:value="${dict.dictValue}" th:checked="${dict.default}">
 						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
 					</div>
 				</div>
@@ -146,16 +146,19 @@
                     $("#perms").parents(".form-group").hide();
                     $("#icon").parents(".form-group").show();
                     $("#target").parents(".form-group").hide();
+                    $("input[name='visible']").parents(".form-group").show();
                 } else if (menuType == "C") {
                 	$("#url").parents(".form-group").show();
                     $("#perms").parents(".form-group").show();
-                    $("#icon").parents(".form-group").hide();
+                    $("#icon").parents(".form-group").show();
                     $("#target").parents(".form-group").show();
+                    $("input[name='visible']").parents(".form-group").show();
                 } else if (menuType == "F") {
                 	$("#url").parents(".form-group").hide();
                     $("#perms").parents(".form-group").show();
                     $("#icon").parents(".form-group").hide();
                     $("#target").parents(".form-group").hide();
+                    $("input[name='visible']").parents(".form-group").hide();
                 }
         	});  
         });

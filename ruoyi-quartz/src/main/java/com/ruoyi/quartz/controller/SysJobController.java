@@ -6,6 +6,7 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,9 +126,9 @@ public class SysJobController extends BaseController
     @RequiresPermissions("monitor:job:add")
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(SysJob job) throws SchedulerException, TaskException
+    public AjaxResult addSave(@Validated SysJob job) throws SchedulerException, TaskException
     {
-        return toAjax(jobService.insertJobCron(job));
+        return toAjax(jobService.insertJob(job));
     }
 
     /**
@@ -147,9 +148,9 @@ public class SysJobController extends BaseController
     @RequiresPermissions("monitor:job:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(SysJob job) throws SchedulerException, TaskException
+    public AjaxResult editSave(@Validated SysJob job) throws SchedulerException, TaskException
     {
-        return toAjax(jobService.updateJobCron(job));
+        return toAjax(jobService.updateJob(job));
     }
 
     /**

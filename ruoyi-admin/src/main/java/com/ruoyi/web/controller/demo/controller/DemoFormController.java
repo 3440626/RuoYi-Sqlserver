@@ -137,6 +137,24 @@ public class DemoFormController
     }
 
     /**
+     * 卡片列表
+     */
+    @GetMapping("/cards")
+    public String cards()
+    {
+        return prefix + "/cards";
+    }
+
+    /**
+     * summernote 富文本编辑器
+     */
+    @GetMapping("/summernote")
+    public String summernote()
+    {
+        return prefix + "/summernote";
+    }
+
+    /**
      * 搜索自动补全
      */
     @GetMapping("/autocomplete")

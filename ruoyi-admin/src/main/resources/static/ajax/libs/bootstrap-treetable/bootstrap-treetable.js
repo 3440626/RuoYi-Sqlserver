@@ -70,6 +70,12 @@
             var $rightToolbar = $('<div class="btn-group tool-right">');
             $toolbar.append($rightToolbar);
             target.parent().before($toolbar);
+            // ruoyi 是否显示检索信息
+            if (options.showSearch) {
+                var $searchBtn = $('<button class="btn btn-default btn-outline" type="button" aria-label="search" title="搜索"><i class="glyphicon glyphicon-search"></i></button>');
+                $rightToolbar.append($searchBtn);
+                registerSearchBtnClickEvent($searchBtn);
+            }
             // 是否显示刷新按钮
             if (options.showRefresh) {
                 var $refreshBtn = $('<button class="btn btn-default btn-outline" type="button" aria-label="refresh" title="刷新"><i class="glyphicon glyphicon-repeat"></i></button>');
@@ -159,6 +165,7 @@
                     data: parms ? parms : options.ajaxParams,
                     dataType: "JSON",
                     success: function(data, textStatus, jqXHR) {
+                    	data = calculateObjectValue(options, options.responseHandler, [data], data);
                         renderTable(data);
                     },
                     error: function(xhr, textStatus) {
@@ -335,13 +342,13 @@
                     }
                     // 增加formatter渲染
                     if (column.formatter) {
-                        $td.html(column.formatter.call(this, item[column.field], item, index));
+                        $td.html(column.formatter.call(this, getItemField(item, column.field), item, index));
                     } else {
                         if(options.showTitle){
                             // 只在字段没有formatter时才添加title属性
                             $td.attr("title",item[column.field]);
                         }
-                        $td.text(item[column.field]);
+                        $td.text(getItemField(item, column.field));
                     }
                     if (options.expandColumn == index) {
                         if (!isP) {
@@ -357,6 +364,12 @@
                 }
             });
             return $tr;
+        }
+        // 检索信息按钮点击事件
+        var registerSearchBtnClickEvent = function(btn) {
+            $(btn).off('click').on('click', function () {
+                $(".search-collapse").slideToggle();
+            });
         }
         // 注册刷新按钮点击事件
         var registerRefreshBtnClickEvent = function(btn) {
@@ -583,6 +596,46 @@
                 $input.prop("checked", '');
             }
         }
+        // ruoyi 解析数据，支持多层级访问
+        var getItemField = function (item, field) {
+            var value = item;
+
+            if (typeof field !== 'string' || item.hasOwnProperty(field)) {
+                return item[field];
+            }
+            var props = field.split('.');
+            for (var p in props) {
+                value = value && value[props[p]];
+            }
+            return value;
+        };
+        // ruoyi 发起对目标(target)函数的调用
+        var calculateObjectValue = function (self, name, args, defaultValue) {
+            var func = name;
+
+            if (typeof name === 'string') {
+                var names = name.split('.');
+
+                if (names.length > 1) {
+                    func = window;
+                    $.each(names, function (i, f) {
+                        func = func[f];
+                    });
+                } else {
+                    func = window[name];
+                }
+            }
+            if (typeof func === 'object') {
+                return func;
+            }
+            if (typeof func === 'function') {
+                return func.apply(self, args);
+            }
+            if (!func && typeof name === 'string' && sprintf.apply(this, [name].concat(args))) {
+                return sprintf.apply(this, [name].concat(args));
+            }
+            return defaultValue;
+        };
         // 初始化
         init();
         return target;
@@ -671,10 +724,13 @@
         toolbar: null,             // 顶部工具条
         height: 0,                 // 表格高度
         showTitle: true,           // 是否采用title属性显示字段内容（被formatter格式化的字段不会显示）
+        showSearch: true,          // 是否显示检索信息
         showColumns: true,         // 是否显示内容列下拉框
         showRefresh: true,         // 是否显示刷新按钮
         expanderExpandedClass: 'glyphicon glyphicon-chevron-down', // 展开的按钮的图标
-        expanderCollapsedClass: 'glyphicon glyphicon-chevron-right' // 缩起的按钮的图标
-
+        expanderCollapsedClass: 'glyphicon glyphicon-chevron-right', // 缩起的按钮的图标
+        responseHandler: function(res) {
+            return false;
+        }
     };
 })(jQuery);
