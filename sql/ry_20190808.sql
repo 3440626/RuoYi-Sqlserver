@@ -2685,7 +2685,7 @@ CREATE TABLE [dbo].[gen_table_column] (
   [is_edit] 					nchar(1)  									DEFAULT NULL 						NULL,
   [is_list] 					nchar(1)  									DEFAULT NULL 						NULL,
   [is_query] 					nchar(1)  									DEFAULT NULL 						NULL,
-  [query_type] 				nvarchar(200) 							DEFAULT ('=') 					NULL,
+  [query_type] 				nvarchar(200) 							DEFAULT ('EQ') 					NULL,
   [html_type] 				nvarchar(200)  							DEFAULT NULL 						NULL,
   [dict_type] 				nvarchar(200)  							DEFAULT '' 							NULL,
   [sort] 							int 												DEFAULT NULL 						NULL,
