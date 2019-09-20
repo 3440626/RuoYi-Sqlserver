@@ -72,10 +72,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND   F.MINOR_ID=0 AND   D.XTYPE='U' AND  D.NAME!='DTPROPERTIES'
 		AND D.NAME NOT IN (select table_name from gen_table)
 		<if test="tableName != null and tableName != ''">
-			AND table_name like '%'+#{tableName}+ '%'
+			AND D.NAME like '%'+#{tableName}+ '%'
 		</if>
 		<if test="tableComment != null and tableComment != ''">
-			AND table_comment like '%'+#{tableComment}+ '%'
+			AND cast(F.VALUE as nvarchar) like '%'+#{tableComment}+ '%'
 		</if>
 	</select>
 	
