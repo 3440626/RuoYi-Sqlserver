@@ -40,18 +40,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectDbTableColumnsByName" parameterType="String" resultMap="GenTableColumnResult">
-		SELECT
-			cast(A.NAME as nvarchar) as column_name,
-			cast(B.NAME as nvarchar) as column_type,
-			cast(G.[VALUE] as nvarchar) as column_comment
-		FROM   SYSCOLUMNS   A
-			LEFT   JOIN   SYSTYPES   B   ON   A.XTYPE=B.XUSERTYPE
-			INNER   JOIN   SYSOBJECTS   D   ON   A.ID=D.ID     AND   D.XTYPE='U'   AND     D.NAME!='DTPROPERTIES'
-			LEFT   JOIN   SYS.EXTENDED_PROPERTIES G   ON   A.ID=G.MAJOR_ID   AND   A.COLID=G.MINOR_ID
-			LEFT   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID   AND   F.MINOR_ID   =0
-		where   D.NAME = #{tableName}
-		ORDER   BY   A.COLORDER
-	</select>
+        SELECT
+            cast(A.NAME as nvarchar) as column_name,
+            cast(B.NAME as nvarchar) as column_type,
+            cast(G.[VALUE] as nvarchar) as column_comment,
+            (SELECT 1  FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE Z  WHERE TABLE_NAME=D.NAME and A.NAME = Z.column_name  ) as is_pk
+        FROM   SYSCOLUMNS   A
+            LEFT   JOIN   SYSTYPES   B   ON   A.XTYPE=B.XUSERTYPE
+            INNER   JOIN   SYSOBJECTS   D   ON   A.ID=D.ID     AND   D.XTYPE='U'   AND     D.NAME!='DTPROPERTIES'
+            LEFT   JOIN   SYS.EXTENDED_PROPERTIES G   ON   A.ID=G.MAJOR_ID   AND   A.COLID=G.MINOR_ID
+            LEFT   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID   AND   F.MINOR_ID   =0
+        where   D.NAME = #{tableName}
+        ORDER   BY   A.COLORDER
+    </select>
     
     <insert id="insertGenTableColumn" parameterType="GenTableColumn" useGeneratedKeys="true" keyProperty="columnId">
         insert into gen_table_column (
