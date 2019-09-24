@@ -19,7 +19,7 @@ public class GenUtils
      */
     public static void initTable(GenTable genTable, String operName)
     {
-        genTable.setClassName(StringUtils.convertToCamelCase(genTable.getTableName()));
+        genTable.setClassName(convertClassName(genTable.getTableName()));
         genTable.setPackageName(GenConfig.getPackageName());
         genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
@@ -153,6 +153,25 @@ public class GenUtils
     }
 
     /**
+     * 表名转换成Java类名
+     * 
+     * @param tableName 表名称
+     * @return 类名
+     */
+    public static String convertClassName(String tableName)
+    {
+        boolean autoRemovePre = GenConfig.getAutoRemovePre();
+        String tablePrefix = GenConfig.getTablePrefix();
+        if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
+        {
+            String[] searchList = StringUtils.split(tablePrefix, ",");
+            String[] replacementList = emptyList(searchList.length);
+            tableName = StringUtils.replaceEach(tableName, searchList, replacementList);
+        }
+        return StringUtils.convertToCamelCase(tableName);
+    }
+
+    /**
      * 关键字替换
      * 
      * @param name 需要被替换的名字
@@ -198,5 +217,21 @@ public class GenUtils
         {
             return 0;
         }
+    }
+
+    /**
+     * 获取空数组列表
+     * 
+     * @param length 长度
+     * @return 数组信息
+     */
+    public static String[] emptyList(int length)
+    {
+        String[] values = new String[length];
+        for (int i = 0; i < length; i++)
+        {
+            values[i] = StringUtils.EMPTY;
+        }
+        return values;
     }
 }

@@ -9,7 +9,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -138,7 +137,7 @@ public class GenController extends BaseController
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(@Validated GenTable genTable, BindingResult result)
+    public AjaxResult editSave(@Validated GenTable genTable)
     {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);

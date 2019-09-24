@@ -245,9 +245,9 @@
 				}
 			},
             // 搜索-默认第一个form
-            search: function(formId, data) {
+            search: function(formId, tableId, data) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
-    		    var params = $.btTable.bootstrapTable('getOptions');
+            	var params = $.common.isEmpty(tableId) ? $.btTable.bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
     		    params.queryParams = function(params) {
                     var search = $.common.formToJSON(currentId);
                     if($.common.isNotEmpty(data)){
@@ -262,7 +262,11 @@
                     search.isAsc = params.order;
     		        return search;
     		    }
-    		    $.btTable.bootstrapTable('refresh', params);
+    		    if($.common.isNotEmpty(tableId)){
+    				$("#" + tableId).bootstrapTable('refresh', params);
+    			} else{
+    				$.btTable.bootstrapTable('refresh', params);
+    			}
     		},
     		// 导出数据
     		exportExcel: function(formId) {
@@ -429,8 +433,9 @@
                 $.bttTable = $('#' + options.id).bootstrapTreeTable({
                 	code: options.code,                                 // 用于设置父子关系
         		    parentCode: options.parentCode,                     // 用于设置父子关系
-        	    	type: 'post',                                        // 请求方式（*）
+        	    	type: 'post',                                       // 请求方式（*）
         	        url: options.url,                                   // 请求后台的URL（*）
+        	        data: options.data,                                 // 无url时用于渲染的数据
         	        ajaxParams: options.ajaxParams,                     // 请求数据的ajax的data属性
         	        rootIdValue: options.rootIdValue,                   // 设置指定根节点id值
         	        height: options.height,                             // 表格树的高度
@@ -477,10 +482,16 @@
         // 表单封装处理
     	form: {
     		// 表单重置
-    		reset: function(formId) {
+    		reset: function(formId, tableId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	$("#" + currentId)[0].reset();
-                $.btTable.bootstrapTable('refresh');
+            	if ($.table._option.type == table_type.bootstrapTable) {
+            	    if($.common.isEmpty(tableId)){
+            	    	$.btTable.bootstrapTable('refresh');
+                	} else{
+                	    $("#" + tableId).bootstrapTable('refresh');
+                	}
+            	}
             },
             // 获取选中复选框项
             selectCheckeds: function(name) {
@@ -1190,6 +1201,10 @@
         	// 不允许根父节点选择
         	notAllowParents: function(_tree) {
     		    var nodes = _tree.getSelectedNodes();
+    		    if(nodes.length == 0){
+                    $.modal.msgError("请选择节点后提交");
+                    return false;
+				}
     		    for (var i = 0; i < nodes.length; i++) {
     		        if (nodes[i].level == 0) {
     		            $.modal.msgError("不能选择根节点（" + nodes[i].name + "）");

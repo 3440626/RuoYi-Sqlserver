@@ -1382,6 +1382,7 @@ CREATE TABLE [dbo].[sys_oper_log] (
   [title]                       nvarchar(50)                       DEFAULT (N'')                   NULL,
   [business_type]               int                                DEFAULT ((0))                   NULL,
   [method]                      nvarchar(100)                      DEFAULT (N'')                   NULL,
+  [request_method]              nvarchar(10)                       DEFAULT (N'')                   NULL,
   [operator_type]               int                                DEFAULT ((0))                   NULL,
   [oper_name]                   nvarchar(50)                       DEFAULT (N'')                   NULL,
   [dept_name]                   nvarchar(50)                       DEFAULT (N'')                   NULL,
@@ -1389,6 +1390,7 @@ CREATE TABLE [dbo].[sys_oper_log] (
   [oper_ip]                     nvarchar(50)                       DEFAULT (N'')                   NULL,
   [oper_location]               nvarchar(255)                      DEFAULT (N'')                   NULL,
   [oper_param]                  nvarchar(2000)                     DEFAULT (N'')                   NULL,
+  [json_result]                 nvarchar(2000)                     DEFAULT (N'')                   NULL,
   [status]                      int                                DEFAULT ((0))                   NULL,
   [error_msg]                   nvarchar(2000)                     DEFAULT (N'')                   NULL,
   [oper_time]                   datetime2(7)                       DEFAULT NULL                    NULL
@@ -1421,6 +1423,13 @@ EXEC sp_addextendedproperty
 'SCHEMA', N'dbo',
 'TABLE', N'sys_oper_log',
 'COLUMN', N'method'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'请求方式',
+'SCHEMA', N'dbo',
+'TABLE', N'sys_oper_log',
+'COLUMN', N'request_method'
 GO
 
 EXEC sp_addextendedproperty
@@ -1470,6 +1479,13 @@ EXEC sp_addextendedproperty
 'SCHEMA', N'dbo',
 'TABLE', N'sys_oper_log',
 'COLUMN', N'oper_param'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'返回参数',
+'SCHEMA', N'dbo',
+'TABLE', N'sys_oper_log',
+'COLUMN', N'json_result'
 GO
 
 EXEC sp_addextendedproperty
