@@ -1,16 +1,9 @@
 ## 平台简介
 
-一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适的。于是利用空闲休息时间开始自己写了一套后台系统。如此有了若依。她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。
+若依-SqlServer
+本仓库为若依的SqlServer版本 (保持同步更新)
 
-性别男，若依是给还没有出生女儿取的名字（寓意：你若不离不弃，我必生死相依）
-
-若依参考后台模板。有需要可自行到群内下载。
-
-> 如需单应用，请移步 [RuoYi-fast](https://gitee.com/y_project/RuoYi-fast)  `(保持同步更新)`，如需其他版本，请移步 [项目扩展](http://doc.ruoyi.vip/#/standard/xmkz)  `(不定时更新)`
-
-> 阿里云通用云产品1888优惠券 ：[点我领取](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=brki8iof)&nbsp;&nbsp;&nbsp;&nbsp;腾讯云通用云产品2860优惠券 ：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;`(仅限新用户)`
-
-> 阿里云Hi拼购 限量爆款 低至199元/年 [点我进入](https://www.aliyun.com/acts/hi-group-buying?userCode=brki8iof)&nbsp;&nbsp;`(仅限新用户)`
+她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。
 
 ## 内置功能
 
@@ -35,56 +28,54 @@
 > admin/admin123  
 > 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
 
-演示地址：http://ruoyi.vip  
-
 文档地址：http://doc.ruoyi.vip
 
 ## 演示图
 
 <table>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/25b5e333768d013d45a990c152dbe4d9d6e.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/e29fd81b2d43b517f99535564af41f9d1d5.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102053_7c1f623c_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_94432484_1274275.jpeg"/></td>
     </tr>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/629f1510fb6205f773c8c284863406b694f.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/9124eda87df0e72427cd63f458b813e3363.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_94197a31_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_19b72632_1274275.jpeg"/></td>
     </tr>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/438c59467afd0097cfbe9c89db932661687.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/72a015041db6843aca7f7b273688cb346f8.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_ab7bcb70_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_51ef9ecd_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/ecb5f1c9929f1933f733f796749b2df73d9.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/e4283d500eb10e8dd8701e7742f7facb065.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_07877c19_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_58a8a468_1274275.jpeg"/></td>
     </tr>	 
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/2531dbf419a1b114e1177f8d2a120b8a9c3.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/8b740a42dddc1e5a8a150d97c5060df258b.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_102a316c_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_847a841a_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/00e642dc3515919b3760968cc496a12a849.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/f72d28a3e60413a4e1b5c7c2f45f962fd65.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_beccede0_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_f52cfc34_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/19222e495869a2a99fc31c5d2bd4539e1e7.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/264d25176f4e22b4b38e95fe6ce73775299.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_336a6965_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_eee12520_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/d85fbb59be27fb33f68bdbb6e8bc967c97b.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/bb902d2c54bad02a052e9a05e5f22a93df1.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_6c103eaf_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102054_7ae660dc_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/30cda883bb9a7f74f1454314e64f949942d.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/deebaaa8d6b14a419ed5911f49e3f222a6f.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102055_397b6ec9_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102055_8928232f_1274275.jpeg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/bed2b98a44e7ae820c2885329e711965c28.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/5f3d39a141f21f81b90536f391b8408f1fa.jpg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102055_8fe5923f_1274275.jpeg"/></td>
+        <td><img src="https://images.gitee.com/uploads/images/2019/0927/102055_3e0ac1fa_1274275.jpeg"/></td>
     </tr>
 </table>
 
 
-## 若依交流群
+## SqlServer版本交流群
 
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-1389287-blue.svg)](https://jq.qq.com/?_wv=1027&k=5HBAaYN)  [![加入QQ群](https://img.shields.io/badge/已满-1679294-blue.svg)](https://jq.qq.com/?_wv=1027&k=5cHeRVW)  [![加入QQ群](https://img.shields.io/badge/已满-1529866-blue.svg)](https://jq.qq.com/?_wv=1027&k=53R0L5Z)  [![加入QQ群](https://img.shields.io/badge/已满-1772718-blue.svg)](https://jq.qq.com/?_wv=1027&k=5g75dCU)  [![加入QQ群](https://img.shields.io/badge/已满-1366522-blue.svg)](https://jq.qq.com/?_wv=1027&k=58cPoHA)  [![加入QQ群](https://img.shields.io/badge/1382251-blue.svg)](https://jq.qq.com/?_wv=1027&k=5Ofd4Pb)  点击按钮入群。
+QQ群： [![加入QQ群](https://img.shields.io/badge/1382251-blue.svg)](https://jq.qq.com/?_wv=1027&k=5Ofd4Pb)  点击按钮入群。
