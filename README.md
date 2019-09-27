@@ -78,4 +78,4 @@
 
 ## SqlServer版本交流群
 
-QQ群： [![加入QQ群](https://img.shields.io/badge/1382251-blue.svg)](https://jq.qq.com/?_wv=1027&k=5Ofd4Pb)  点击按钮入群。
+QQ群： [![加入QQ群](https://img.shields.io/badge/937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5Ofd4Pb)  点击按钮入群。
