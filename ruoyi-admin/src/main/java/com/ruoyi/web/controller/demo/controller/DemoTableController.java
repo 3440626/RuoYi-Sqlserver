@@ -168,6 +168,15 @@ public class DemoTableController extends BaseController
     }
 
     /**
+     * 表格父子视图
+     */
+    @GetMapping("/child")
+    public String child()
+    {
+        return prefix + "/child";
+    }
+
+    /**
      * 表格图片预览
      */
     @GetMapping("/image")
