@@ -79,3 +79,9 @@
 ## SqlServer版本交流群
 
 QQ群： [![加入QQ群](https://img.shields.io/badge/937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5Ofd4Pb)  点击按钮入群。
+
+
+## 请维护者喝杯咖啡
+
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0927/104318_46a96479_1274275.jpeg "微信图片_20190927104245.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0927/104336_367aa55e_1274275.jpeg "微信图片_20190927104240.jpg")
