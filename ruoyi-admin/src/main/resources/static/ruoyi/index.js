@@ -398,7 +398,14 @@ $(function() {
         var url = target.attr('src');
         target.attr('src', url).ready();
     }
-    
+
+    // 页签全屏
+    function fullScreenTab() {
+        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+        var target = $('.RuoYi_iframe[data-id="' + currentId + '"]');
+        target.fullScreen(true);
+    }
+
     // 关闭当前选项卡
     function tabCloseCurrent() {
     	$('.page-tabs-content').find('.active i').trigger("click");
@@ -431,9 +438,12 @@ $(function() {
     $('#fullScreen').on('click', function () {
     	$(document).toggleFullScreen();
     });
-    
-    // 刷新按钮
+
+    // 页签刷新按钮
     $('.tabReload').on('click', refreshTab);
+
+    // 页签全屏按钮
+    $('.tabFullScreen').on('click', fullScreenTab);
 
     // 双击选项卡全屏显示
     $('.menuTabs').on('dblclick', '.menuTab', activeTabMax);
