@@ -72,7 +72,8 @@ var table = {
 				table.config[options.id] = options;
                 $.table.initEvent();
                 $('#' + options.id).bootstrapTable({
-                    url: options.url,                                   // 请求后台的URL（*）
+					id: options.id,
+					url: options.url,                                   // 请求后台的URL（*）
                     contentType: "application/x-www-form-urlencoded",   // 编码类型
                     method: 'post',                                     // 请求方式（*）
                     cache: false,                                       // 是否使用缓存
