@@ -159,11 +159,8 @@ public class SysUserController extends BaseController
     @ResponseBody
     public AjaxResult editSave(@Validated SysUser user)
     {
-        if (StringUtils.isNotNull(user.getUserId()) && SysUser.isAdmin(user.getUserId()))
-        {
-            return error("不允许修改超级管理员用户");
-        }
-        else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
+        userService.checkUserAllowed(user);
+        if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return error("修改用户'" + user.getLoginName() + "'失败，手机号码已存在");
         }
@@ -190,6 +187,7 @@ public class SysUserController extends BaseController
     @ResponseBody
     public AjaxResult resetPwdSave(SysUser user)
     {
+        userService.checkUserAllowed(user);
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         if (userService.resetUserPwd(user) > 0)
@@ -258,6 +256,7 @@ public class SysUserController extends BaseController
     @ResponseBody
     public AjaxResult changeStatus(SysUser user)
     {
+        userService.checkUserAllowed(user);
         return toAjax(userService.changeStatus(user));
     }
 }

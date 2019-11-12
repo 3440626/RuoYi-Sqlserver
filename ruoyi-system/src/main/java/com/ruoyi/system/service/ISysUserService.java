@@ -140,11 +140,19 @@ public interface ISysUserService
     public String checkEmailUnique(SysUser user);
 
     /**
+     * 校验用户是否允许操作
+     *
+     * @param user 用户信息
+     */
+    public void checkUserAllowed(SysUser user);
+
+    /**
      * 根据用户ID查询用户所属角色组
      * 
      * @param userId 用户ID
      * @return 结果
      */
+
     public String selectUserRoleGroup(Long userId);
 
     /**
