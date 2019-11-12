@@ -57,10 +57,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectGenTableVo"/>
 		<where>
 			<if test="tableName != null and tableName != ''">
-				AND table_name like '%'+#{tableName}+ '%'
+				AND lower(table_name) like lower('%'+#{tableName}+ '%')
 			</if>
 			<if test="tableComment != null and tableComment != ''">
-				AND table_comment like '%'+#{tableComment}+ '%'
+				AND lower(table_comment) like lower('%'+#{tableComment}+ '%')
 			</if>
 		</where>
 	</select>
@@ -72,10 +72,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND   F.MINOR_ID=0 AND   D.XTYPE='U' AND  D.NAME!='DTPROPERTIES'
 		AND D.NAME NOT IN (select table_name from gen_table)
 		<if test="tableName != null and tableName != ''">
-			AND D.NAME like '%'+#{tableName}+ '%'
+			AND lower(D.NAME) like lower('%'+#{tableName}+ '%')
 		</if>
 		<if test="tableComment != null and tableComment != ''">
-			AND cast(F.VALUE as nvarchar) like '%'+#{tableComment}+ '%'
+			AND lower(cast(F.VALUE as nvarchar)) like lower('%'+#{tableComment}+ '%')
 		</if>
 	</select>
 	
