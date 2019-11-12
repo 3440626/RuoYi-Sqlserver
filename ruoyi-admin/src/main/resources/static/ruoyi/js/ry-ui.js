@@ -1352,7 +1352,11 @@
             formToJSON: function(formId) {
             	 var json = {};
                  $.each($("#" + formId).serializeArray(), function(i, field) {
-                	 json[field.name] = field.value;
+					 if(json[field.name]) {
+						 json[field.name] += ("," + field.value);
+					 } else {
+						 json[field.name] = field.value;
+					 }
                  });
             	return json;
             }
