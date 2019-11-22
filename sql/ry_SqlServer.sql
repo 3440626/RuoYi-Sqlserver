@@ -1989,10 +1989,7 @@ GO
 INSERT INTO [dbo].[sys_config] ([config_id], [config_name], [config_key], [config_value], [config_type], [create_by], [create_time], [update_by], [update_time], [remark]) VALUES (N'2', N'用户管理-账号初始密码', N'sys.user.initPassword', N'123456', N'Y', N'admin', N'2018-03-16 11:33:00.0000000', N'ry', N'2018-03-16 11:33:00.0000000', N'初始化密码 123456')
 GO
 
-INSERT INTO [dbo].[sys_config] ([config_id], [config_name], [config_key], [config_value], [config_type], [create_by], [create_time], [update_by], [update_time], [remark]) VALUES (N'3', N'主框架页-侧边栏主题', N'sys.index.sideTheme', N'theme-dark', N'Y', N'admin', N'2018-03-16 11:33:00.0000000', N'admin', N'2019-08-05 16:27:09.0500000', N'深色主题theme-dark，浅色主题theme-light')
-GO
-
-INSERT INTO [dbo].[sys_config] ([config_id], [config_name], [config_key], [config_value], [config_type], [create_by], [create_time], [update_by], [update_time], [remark]) VALUES (N'4', N'主框架页-侧边栏主题', N'sys.index.sideTheme', N'theme-dark', N'Y', N'admin', N'2018-03-16 11:33:00.0000000', N'admin', N'2019-08-05 16:27:09.0500000', N'深黑主题theme-dark，浅色主题theme-light，深蓝主题theme-blue')
+INSERT INTO [dbo].[sys_config] ([config_id], [config_name], [config_key], [config_value], [config_type], [create_by], [create_time], [update_by], [update_time], [remark]) VALUES (N'3', N'主框架页-侧边栏主题', N'sys.index.sideTheme', N'theme-dark', N'Y', N'admin', N'2018-03-16 11:33:00.0000000', N'admin', N'2019-08-05 16:27:09.0500000', N'深黑主题theme-dark，浅色主题theme-light，深蓝主题theme-blue')
 GO
 
 SET IDENTITY_INSERT [dbo].[sys_config] OFF
