@@ -73,6 +73,7 @@ public class SysUserServiceImpl implements ISysUserService
      * @param user 用户信息
      * @return 用户信息集合信息
      */
+    @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectAllocatedList(SysUser user)
     {
@@ -85,6 +86,7 @@ public class SysUserServiceImpl implements ISysUserService
      * @param user 用户信息
      * @return 用户信息集合信息
      */
+    @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUnallocatedList(SysUser user)
     {
@@ -140,6 +142,18 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 通过用户ID查询用户和角色关联
+     * 
+     * @param userId 用户ID
+     * @return 用户和角色关联列表
+     */
+    @Override
+    public List<SysUserRole> selectUserRoleByUserId(Long userId)
+    {
+        return userRoleMapper.selectUserRoleByUserId(userId);
+    }
+
+    /**
      * 通过用户ID删除用户
      * 
      * @param userId 用户ID
@@ -187,8 +201,21 @@ public class SysUserServiceImpl implements ISysUserService
         // 新增用户岗位关联
         insertUserPost(user);
         // 新增用户与角色管理
-        insertUserRole(user);
+        insertUserRole(user.getUserId(), user.getRoleIds());
         return rows;
+    }
+
+    /**
+     * 注册用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean registerUser(SysUser user)
+    {
+        user.setUserType(UserConstants.REGISTER_USER_TYPE);
+        return userMapper.insertUser(user) > 0;
     }
 
     /**
@@ -205,7 +232,7 @@ public class SysUserServiceImpl implements ISysUserService
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
-        insertUserRole(user);
+        insertUserRole(user.getUserId(), user.getRoleIds());
         // 删除用户与岗位关联
         userPostMapper.deleteUserPostByUserId(userId);
         // 新增用户与岗位管理
@@ -226,6 +253,19 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 用户授权角色
+     * 
+     * @param userId 用户ID
+     * @param roleIds 角色组
+     */
+    @Override
+    public void insertUserAuth(Long userId, Long[] roleIds)
+    {
+        userRoleMapper.deleteUserRoleByUserId(userId);
+        insertUserRole(userId, roleIds);
+    }
+
+    /**
      * 修改用户密码
      * 
      * @param user 用户信息
@@ -242,17 +282,16 @@ public class SysUserServiceImpl implements ISysUserService
      * 
      * @param user 用户对象
      */
-    public void insertUserRole(SysUser user)
+    public void insertUserRole(Long userId, Long[] roleIds)
     {
-        Long[] roles = user.getRoleIds();
-        if (StringUtils.isNotNull(roles))
+        if (StringUtils.isNotNull(roleIds))
         {
             // 新增用户与角色管理
             List<SysUserRole> list = new ArrayList<SysUserRole>();
-            for (Long roleId : roles)
+            for (Long roleId : roleIds)
             {
                 SysUserRole ur = new SysUserRole();
-                ur.setUserId(user.getUserId());
+                ur.setUserId(userId);
                 ur.setRoleId(roleId);
                 list.add(ur);
             }
@@ -307,7 +346,7 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
-     * 校验用户名称是否唯一
+     * 校验手机号码是否唯一
      *
      * @param user 用户信息
      * @return
@@ -344,9 +383,10 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 校验用户是否允许操作
-     *
+     * 
      * @param user 用户信息
      */
+    @Override
     public void checkUserAllowed(SysUser user)
     {
         if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin())

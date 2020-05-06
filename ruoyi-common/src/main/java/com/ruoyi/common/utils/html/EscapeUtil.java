@@ -4,7 +4,7 @@ import com.ruoyi.common.utils.StringUtils;
 
 /**
  * 转义和反转义工具类
- *
+ * 
  * @author ruoyi
  */
 public class EscapeUtil
@@ -30,7 +30,7 @@ public class EscapeUtil
 
     /**
      * 转义文本中的HTML字符为安全的字符
-     *
+     * 
      * @param text 被转义的文本
      * @return 转义后的文本
      */
@@ -41,7 +41,7 @@ public class EscapeUtil
 
     /**
      * 还原被转义的HTML特殊字符
-     *
+     * 
      * @param content 包含转义符的HTML内容
      * @return 转换后的字符串
      */
@@ -52,18 +52,18 @@ public class EscapeUtil
 
     /**
      * 清除所有HTML标签，但是不删除标签内的内容
-     *
+     * 
      * @param content 文本
      * @return 清除标签后的文本
      */
     public static String clean(String content)
     {
-        return content.replaceAll(RE_HTML_MARK, "");
+        return new HTMLFilter().filter(content);
     }
 
     /**
      * Escape编码
-     *
+     * 
      * @param text 被编码的文本
      * @return 编码后的字符
      */
@@ -93,7 +93,7 @@ public class EscapeUtil
 
     /**
      * Escape解码
-     *
+     * 
      * @param content 被转义的内容
      * @return 解码后的字符串
      */
@@ -145,6 +145,8 @@ public class EscapeUtil
     public static void main(String[] args)
     {
         String html = "<script>alert(1);</script>";
+        // String html = "<scr<script>ipt>alert(\"XSS\")</scr<script>ipt>";
+        // String html = "<123";
         System.out.println(EscapeUtil.clean(html));
         System.out.println(EscapeUtil.escape(html));
         System.out.println(EscapeUtil.unescape(html));

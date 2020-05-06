@@ -232,7 +232,7 @@
                     $(this).width($($(thattds).find('td')[j]).width() + 1);
                 });
             });
-
+            
             $("#" + table.options.id).on("check.bs.table uncheck.bs.table", function (e, rows, $element) {
         	    var index= $element.data('index');
                 $(this).find('.bs-checkbox').find('input[data-index="' + index + '"]').prop("checked", true);
@@ -243,8 +243,33 @@
                 $(".left-fixed-table-columns input[name=btSelectAll]").prop('checked', checkAll);
                 $('.fixed-table-body input[name=btSelectItem]').closest('tr').removeClass('selected');
         	});
+            
+            $("#" + table.options.id).off('click', '.fixed-table-body').on('click', '.th-inner', function (event) {
+            	$.each(that.$fixedHeader.find('th'), function (i, th) {
+        			$(th).find('.sortable').removeClass('desc asc').addClass('both');
+        		});
+            });
 
-            //// events
+            // events
+            this.$fixedHeader.off('click', '.th-inner').on('click', '.th-inner', function (event) {
+            	var target = $(this);
+            	var $this = event.type === "keypress" ? $(event.currentTarget) : $(event.currentTarget).parent(), $this_ = that.$header.find('th').eq($this.index());
+            	
+            	var sortOrder = "";
+            	if (table.options.sortName === $this.data('field')) {
+            		sortOrder = table.options.sortOrder === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortOrder = $this.data('order') === 'asc' ? 'desc' : 'asc';
+                }
+            	table.options.sortOrder = sortOrder;
+            	var sortName = $this.data('sortName') ? $this.data('sortName') : $this.data('field');
+            	if (target.parent().data().sortable) {
+            		$.each(that.$fixedHeader.find('th'), function (i, th) {
+            			$(th).find('.sortable').removeClass('desc asc').addClass(($(th).data('field') === sortName || $(th).data('sortName') === sortName) ? sortOrder : 'both');
+            		});
+                }
+            });
+            
             this.$tableBody.on('scroll', function () {
                 that.$fixedBody.find('table').css('top', -$(this).scrollTop());
             });

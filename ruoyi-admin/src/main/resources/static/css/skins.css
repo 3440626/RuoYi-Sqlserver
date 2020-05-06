@@ -936,7 +936,7 @@
 .theme-blue.skin-green .navbar-default .nav>li.selected>a,
 .theme-blue.skin-green .navbar-default .nav>li.selected>a:focus {
 	background-color: #52c41a;
-	color: rgba(255,255,255,1);
+    color: rgba(255,255,255,1);
 }
 
 .theme-blue.skin-purple .navbar-default .nav>li.active>a {
@@ -946,7 +946,7 @@
 .theme-blue.skin-purple .navbar-default .nav>li.selected>a,
 .theme-blue.skin-purple .navbar-default .nav>li.selected>a:focus {
 	background-color: #722ed1;
-	color: rgba(255,255,255,1);
+    color: rgba(255,255,255,1);
 }
 
 .theme-blue.skin-red .navbar-default .nav>li.active>a {
@@ -956,7 +956,7 @@
 .theme-blue.skin-red .navbar-default .nav>li.selected>a,
 .theme-blue.skin-red .navbar-default .nav>li.selected>a:focus {
 	background-color: #f5222d;
-	color: rgba(255,255,255,1);
+    color: rgba(255,255,255,1);
 }
 
 .theme-blue.skin-yellow .navbar-default .nav>li.active>a {
@@ -966,7 +966,7 @@
 .theme-blue.skin-yellow .navbar-default .nav>li.selected>a,
 .theme-blue.skin-yellow .navbar-default .nav>li.selected>a:focus {
 	background-color: #faad14;
-	color: rgba(255,255,255,1);
+    color: rgba(255,255,255,1);
 }
 
 .theme-blue .navbar-default .nav>li>a:hover,
@@ -976,9 +976,9 @@
 }
 
 .fixed-sidebar.theme-blue.mini-navbar .nav li:hover>a> span.nav-label {
-	background-color: rgba(15,41,80,1);
+    background-color: rgba(15,41,80,1);
 }
 
 .fixed-sidebar.theme-blue.mini-navbar .nav li:hover>.nav-second-level {
-	background-color: rgba(15,41,80,1);
+    background-color: rgba(15,41,80,1);
 }

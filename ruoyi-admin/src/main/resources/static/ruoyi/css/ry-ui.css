@@ -322,12 +322,18 @@
 }
 
 /** 表单验证 样式布局 **/
+.control-label.is-required:before {
+  content: '* ';
+  color: red;
+}
+
 label.error {
 	position: absolute;
 	right: 18px;
 	top: 10px;
 	color: #ef392b;
-	font-size: 12px
+	font-size: 12px;
+	z-index:99;
 }
 
 .input-group label.error {
@@ -573,7 +579,7 @@ label.error {
 	}
 }
 
-/** 表单查询条件 **/
+/** 表单查询条件  **/
 .select-list ul, .layui-layer-content ul {
 	margin: 0;
 	padding: 0;
@@ -638,7 +644,7 @@ label {
 	margin: 5px 15px 5px 0px;
 }
 
-.select-list li p{
+.select-list li p, .select-list li label:not(.radio-box):not(:select-time){
 	float: left;
 	width: 65px;
 	margin: 5px 5px 5px 0px;
@@ -811,10 +817,24 @@ label {
 	border: 0px!important;
 }
 
-.table-striped .table, .table-striped .table, .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+.table-striped table>thead>tr>th, .table-striped table>tbody>tr>th, .table-striped table>tfoot>tr>th, .table-striped table>thead>tr>td, .table-striped table>tbody>tr>td, .table-striped table>tfoot>tr>td {
 	border-bottom: 1px solid #e7eaec!important;
 	background-color: transparent;
 	border: 0px;
+}
+
+
+.table-bordered table>thead>tr>th:first-child, .table-bordered table>tbody>tr>td:first-child {
+    border-left: 1px solid #ddd;
+}
+ 
+.table-bordered table>thead>tr>th:last-child, .table-bordered table>tbody>tr>td:last-child {
+	border-right: 1px solid #ddd;
+}
+
+.table-bordered table>thead>tr>th, .table-bordered table>tbody>tr>td {
+    border-top: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd;
 }
 
 .fixed-table-footer {
@@ -836,10 +856,6 @@ label {
 }
 .table-striped table thead {
     background-color: #eff3f8;
-}
-
-.table-bordered td,.table-bordered th {
-	border: 1px solid #ddd!important
 }
 
 .fixed-table-container thead th  >.both{ 
@@ -884,6 +900,16 @@ label {
     z-index:100;
 }
 
+/** 表格全屏样式 **/
+.bootstrap-table.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%!important;
+    background: #FFF;
+}
+
 /** 表格树样式 **/
 .bootstrap-tree-table .treetable-indent {width:16px; height: 16px; display: inline-block; position: relative;}
 .bootstrap-tree-table .treetable-expander {width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
@@ -893,7 +919,7 @@ label {
 .bootstrap-tree-table .treetable-table thead, .treetable-table tbody tr {display:table;width:100%;table-layout:fixed;}
 .bootstrap-tree-table .treetable-thead th{line-height:24px;border: 0 !important;border-radius: 4px;border-left:0px solid #e7eaec !important;border-bottom:1px solid #ccc!important;text-align: left;}
 .bootstrap-tree-table .treetable-thead tr :first-child{border-left:0 !important}
-.bootstrap-tree-table .treetable-tbody td{overflow:hidden;border: 0 !important;border-left:0px solid #e7eaec !important;border-bottom:1px solid #e7eaec!important;white-space: nowrap; text-overflow: ellipsis;}
+.bootstrap-tree-table .treetable-tbody td{border: 0 !important;border-left:0px solid #e7eaec !important;border-bottom:1px solid #e7eaec!important;white-space: nowrap; text-overflow: ellipsis;}
 .bootstrap-tree-table .treetable-tbody tr :first-child{border-left:0 !important}
 .bootstrap-tree-table .treetable-bars .tool-left, .bootstrap-tree-table .treetable-bars .tool-right{margin-top: 10px; margin-bottom: 10px;}
 .bootstrap-tree-table .treetable-bars .tool-left{float: left;}
@@ -996,6 +1022,50 @@ label {
 /** 滚动条样式 **/
 ::-webkit-scrollbar-track {
     background-color: #F5F5F5;
+}
+
+/** 气泡弹出框样式 **/
+.popover {
+	font-size: 13px;
+	max-width: unset;
+}
+
+.popover-title {
+	padding: 8px 14px;
+	margin: 0 !important;
+	font-size: 14px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ebebeb;
+	border-radius: 5px 5px 0 0;
+}
+
+.popover-content {
+	padding: 5px;
+}
+
+/** 向上滚动样式 **/
+#scroll-up {
+	border-width: 0;
+	position: fixed;
+	right: 2px;
+	z-index: 99;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	bottom: -24px;
+	visibility: hidden;
+	background-color: #aaa;
+	color: #fff;
+	font-size: 14px;
+	display: none;
+}
+
+#scroll-up.display {
+	opacity: .7;
+	filter: alpha(opacity=70);
+	bottom: 2px;
+	visibility: visible;
 }
 
 ::-webkit-scrollbar {

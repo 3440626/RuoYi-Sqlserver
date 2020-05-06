@@ -30,16 +30,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
         <include refid="selectNoticeVo"/>
         <where>
-			<if test="noticeTitle != null and noticeTitle != ''">
-				AND notice_title like '%'+#{noticeTitle}+ '%'
-			</if>
-			<if test="noticeType != null and noticeType != ''">
-				AND notice_type = #{noticeType}
-			</if>
-			<if test="createBy != null and createBy != ''">
-				AND create_by like '%'+#{createBy}+ '%'
-			</if>
-		</where>
+            <if test="noticeTitle != null and noticeTitle != ''">
+                AND notice_title like '%'+#{noticeTitle}+ '%'
+            </if>
+            <if test="noticeType != null and noticeType != ''">
+                AND notice_type = #{noticeType}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                AND create_by like '%'+#{createBy}+ '%'
+            </if>
+        </where>
     </select>
     
     <insert id="insertNotice" parameterType="SysNotice">

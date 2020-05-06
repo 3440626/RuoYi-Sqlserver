@@ -50,7 +50,7 @@
 					editable: true
 				},
 				{
-					field : 'userName',
+					field : 'userName', 
 					title : '用户姓名',
 					editable : {
 						type : 'text',
@@ -68,23 +68,21 @@
 				},
 				{
 					field : 'userPhone', 
-					title : '用户手机',
-					editable: true
+					title : '用户手机'
 				},
 				{
 					field : 'userEmail', 
-					title : '用户邮箱',
-					editable: true
+					title : '用户邮箱'
 				},
 				{
 				    field : 'userBalance',
 				    title : '用户余额'
 				},
 				{
-					field: 'status',
-					title: '用户状态',
-					align: 'center',
-					editable : {
+                    field: 'status',
+                    title: '用户状态',
+                    align: 'center',
+                    editable : {
 						type : 'select',
 						title : '状态',
 						source : [{
@@ -95,7 +93,7 @@
 							text : "停用"
 						}]
 					}
-				},
+                },
 		        {
 		            title: '操作',
 		            align: 'center',
@@ -116,13 +114,13 @@
         
         /* 查询表格所有数据值 */
         function getData(){
-			var data = $("#" + table.options.id).bootstrapTable('getData');
+        	var data = $("#" + table.options.id).bootstrapTable('getData');
             alert(JSON.stringify(data))
         }
         
         /* 查询表格选择行数据值 */
         function getSelections(){
-			var data = $("#" + table.options.id).bootstrapTable('getSelections');
+        	var data = $("#" + table.options.id).bootstrapTable('getSelections');
         	alert(JSON.stringify(data))
         }
     </script>

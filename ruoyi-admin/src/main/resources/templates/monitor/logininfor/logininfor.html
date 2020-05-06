@@ -53,7 +53,7 @@
 	        </div>
         
 	        <div class="col-sm-12 select-table table-striped">
-				<table id="bootstrap-table"></table>
+			    <table id="bootstrap-table"></table>
 			</div>
 		</div>
 	</div>
@@ -124,10 +124,10 @@
 		    };
 		    $.table.init(options);
 		});
-
+		
 		function unlock() {
-			$.operate.post(prefix + "/unlock?loginName=" + $.table.selectColumns("loginName"));
-		}
+            $.operate.post(prefix + "/unlock?loginName=" + $.table.selectColumns("loginName"));
+        }
 	</script>
 </body>
 </html>

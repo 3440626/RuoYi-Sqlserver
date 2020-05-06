@@ -46,7 +46,7 @@ public class ${ClassName}Controller extends BaseController
         return prefix + "/${businessName}";
     }
 
-    #if($table.crud)
+#if($table.crud)
     /**
      * 查询${functionName}列表
      */
@@ -59,7 +59,7 @@ public class ${ClassName}Controller extends BaseController
         List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
         return getDataTable(list);
     }
-    #elseif($table.tree)
+#elseif($table.tree)
     /**
      * 查询${functionName}树列表
      */

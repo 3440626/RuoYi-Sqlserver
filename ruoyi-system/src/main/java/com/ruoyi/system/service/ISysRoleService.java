@@ -110,7 +110,7 @@ public interface ISysRoleService
 
     /**
      * 校验角色是否允许操作
-     *
+     * 
      * @param role 角色信息
      */
     public void checkRoleAllowed(SysRole role);

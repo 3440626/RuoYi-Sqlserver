@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:sqlserver://127.0.0.1:1433;SelectMethod=cursor;DatabaseName=ry
+                url: jdbc:sqlserver://sql.ctrlcloud.cn:1433;SelectMethod=cursor;DatabaseName=RuoYi_SqlServer
                 username: sa
-                password: 123456
+                password: KOCUSSK98Vvc6i5y9eqh628
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -47,7 +47,7 @@ spring:
                 login-password: 
             filter:
                 stat:
-#                    enabled: true
+                    # enabled: true
                     # 慢SQL记录
                     log-slow-sql: true
                     slow-sql-millis: 1000

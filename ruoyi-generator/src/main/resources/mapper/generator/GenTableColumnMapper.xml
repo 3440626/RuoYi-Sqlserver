@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectDbTableColumnsByName" parameterType="String" resultMap="GenTableColumnResult">
-        SELECT
+		SELECT
             cast(A.NAME as nvarchar) as column_name,
             cast(B.NAME as nvarchar) + (case when B.NAME ='numeric' then '('+cast(A.prec as nvarchar)+','+cast(A.scale as nvarchar)+')' else '' end) as column_type,
             cast(G.[VALUE] as nvarchar) as column_comment,
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             LEFT   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID   AND   F.MINOR_ID   =0
         where   D.NAME = #{tableName}
         ORDER   BY   A.COLORDER
-    </select>
+	</select>
     
     <insert id="insertGenTableColumn" parameterType="GenTableColumn" useGeneratedKeys="true" keyProperty="columnId">
         insert into gen_table_column (

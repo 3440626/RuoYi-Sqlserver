@@ -7,31 +7,37 @@ layer.config({
     skin: 'layer-ext-moon'
 });
 
+var isMobile = $.common.isMobile() || $(window).width() < 769;
+var sidebarHeight = isMobile ? '100%' : '96%';
+
 $(function() {
     // MetsiMenu
     $('#side-menu').metisMenu();
 
-    //固定菜单栏
-    $(function() {
-        $('.sidebar-collapse').slimScroll({
-            height: '100%',
-            railOpacity: 0.9,
-            alwaysVisible: false
-        });
+    // 固定菜单栏
+    $('.sidebar-collapse').slimScroll({
+        height: sidebarHeight,
+        railOpacity: 0.9,
+        alwaysVisible: false
     });
 
     // 菜单切换
     $('.navbar-minimalize').click(function() {
-        $("body").toggleClass("mini-navbar");
+    	if (isMobile) {
+    		$("body").toggleClass("canvas-menu");
+    	} else {
+    		$("body").toggleClass("mini-navbar");
+    	}
         SmoothlyMenu();
     });
-
+    
     $('#side-menu>li').click(function() {
-        if ($('body').hasClass('mini-navbar')) {
+    	if ($('body').hasClass('canvas-menu mini-navbar')) {
             NavToggle();
         }
+    	
     });
-    $('#side-menu>li li a').click(function() {
+    $('#side-menu>li li a:not(:has(span))').click(function() {
         if ($(window).width() < 769) {
             NavToggle();
         }
@@ -49,9 +55,8 @@ $(function() {
 $(window).bind("load resize",
 function() {
     if ($(this).width() < 769) {
-        $('body').addClass('mini-navbar');
-        $('.navbar-static-side').fadeIn();
-        $(".sidebar-collapse .logo").addClass("hide");
+        $('body').addClass('canvas-menu');
+        $("nav .logo").addClass("hide");
         $(".slimScrollDiv").css({ "overflow":"hidden" })
     }
 });
@@ -60,21 +65,27 @@ function NavToggle() {
     $('.navbar-minimalize').trigger('click');
 }
 
+function fixedSidebar() {
+	$('#side-menu').hide();
+	$("nav .logo").addClass("hide");
+    setTimeout(function() {
+        $('#side-menu').fadeIn(500);
+    },
+    100);
+}
+
 function SmoothlyMenu() {
-    if (!$('body').hasClass('mini-navbar')) {
-        $('#side-menu').hide();
-        $(".sidebar-collapse .logo").removeClass("hide");
-        setTimeout(function() {
-            $('#side-menu').fadeIn(500);
-        },
-        100);
-    } else if ($('body').hasClass('fixed-sidebar')) {
-        $('#side-menu').hide();
-        $(".sidebar-collapse .logo").addClass("hide");
-        setTimeout(function() {
-            $('#side-menu').fadeIn(500);
-        },
-        300);
+    if (isMobile && !$('body').hasClass('canvas-menu')) {
+    	$('.navbar-static-side').fadeIn();
+    	fixedSidebar();
+    } else if (!isMobile &&!$('body').hasClass('mini-navbar')) {
+    	fixedSidebar();
+    	$("nav .logo").removeClass("hide");
+    } else if (isMobile && $('body').hasClass('fixed-sidebar')) {
+    	$('.navbar-static-side').fadeOut();
+    	fixedSidebar();
+    } else if (!isMobile && $('body').hasClass('fixed-sidebar')) {
+    	fixedSidebar();
     } else {
         $('#side-menu').removeAttr('style');
     }
@@ -398,14 +409,14 @@ $(function() {
         var url = target.attr('src');
         target.attr('src', url).ready();
     }
-
+    
     // 页签全屏
     function fullScreenTab() {
-        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
-        var target = $('.RuoYi_iframe[data-id="' + currentId + '"]');
-        target.fullScreen(true);
+    	var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+    	var target = $('.RuoYi_iframe[data-id="' + currentId + '"]');
+	    target.fullScreen(true);
     }
-
+    
     // 关闭当前选项卡
     function tabCloseCurrent() {
     	$('.page-tabs-content').find('.active i').trigger("click");
@@ -438,10 +449,10 @@ $(function() {
     $('#fullScreen').on('click', function () {
     	$(document).toggleFullScreen();
     });
-
+    
     // 页签刷新按钮
     $('.tabReload').on('click', refreshTab);
-
+    
     // 页签全屏按钮
     $('.tabFullScreen').on('click', fullScreenTab);
 
@@ -479,33 +490,31 @@ $(function() {
         $('#content-main').toggleClass('max');
         $('#ax_close_max').show();
     }
+    
     // 设置锚点
     function setIframeUrl(href) {
-        var nowUrl = window.location.href;
-        var newUrl = nowUrl.substring(0, nowUrl.indexOf("#"));
-        window.location.href = newUrl + "#" + href;
-        if($.common.equals("history", mode)) {
-            storage.set('publicPath', href);
-        } else {
-            var nowUrl = window.location.href;
+    	if($.common.equals("history", mode)) {
+    		storage.set('publicPath', href);
+    	} else {
+    		var nowUrl = window.location.href;
             var newUrl = nowUrl.substring(0, nowUrl.indexOf("#"));
             window.location.href = newUrl + "#" + href;
-        }
+    	}
     }
-
+    
     $(window).keydown(function(event) {
         if (event.keyCode == 27) {
             $('#content-main').removeClass('max');
             $('#ax_close_max').hide();
         }
     });
-
+    
     window.onhashchange = function() {
         var hash = location.hash;
         var url = hash.substring(1, hash.length);
         $('a[href$="' + url + '"]').click();
     };
-
+    
     // 右键菜单实现
     $.contextMenu({
         selector: ".menuTab",

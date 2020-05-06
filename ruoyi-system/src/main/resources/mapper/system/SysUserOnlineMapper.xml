@@ -57,8 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<delete id="deleteOnlineById" parameterType="String">
  		delete from sys_user_online where sessionId = #{sessionId}
  	</delete>
- 	
- 	<select id="selectUserOnlineList" parameterType="SysUserOnline" resultMap="SysUserOnlineResult">
+
+	<select id="selectUserOnlineList" parameterType="SysUserOnline" resultMap="SysUserOnlineResult">
 		<include refid="selectOnlineVo"/>
 		<where>
 			<if test="ipaddr != null and ipaddr != ''">

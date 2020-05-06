@@ -18,11 +18,11 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
@@ -192,13 +192,40 @@ public class SysUserController extends BaseController
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         if (userService.resetUserPwd(user) > 0)
         {
-            if (ShiroUtils.getUserId() == user.getUserId())
+            if (ShiroUtils.getUserId().longValue() == user.getUserId().longValue())
             {
                 ShiroUtils.setSysUser(userService.selectUserById(user.getUserId()));
             }
             return success();
         }
         return error();
+    }
+
+    /**
+     * 进入授权角色页
+     */
+    @GetMapping("/authRole/{userId}")
+    public String authRole(@PathVariable("userId") Long userId, ModelMap mmap)
+    {
+        SysUser user = userService.selectUserById(userId);
+        // 获取用户所属的角色列表
+        List<SysUserRole> userRoles = userService.selectUserRoleByUserId(userId);
+        mmap.put("user", user);
+        mmap.put("userRoles", userRoles);
+        return prefix + "/authRole";
+    }
+
+    /**
+     * 用户授权角色
+     */
+    @RequiresPermissions("system:user:add")
+    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @PostMapping("/authRole/insertAuthRole")
+    @ResponseBody
+    public AjaxResult insertAuthRole(Long userId, Long[] roleIds)
+    {
+        userService.insertUserAuth(userId, roleIds);
+        return success();
     }
 
     @RequiresPermissions("system:user:remove")

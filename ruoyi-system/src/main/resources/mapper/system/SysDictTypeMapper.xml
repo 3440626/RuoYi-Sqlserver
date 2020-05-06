@@ -21,9 +21,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
 	<select id="selectDictTypeList" parameterType="SysDictType" resultMap="SysDictTypeResult">
-	    <include refid="selectDictTypeVo"/>
+		<include refid="selectDictTypeVo"/>
 		<where>
-		    <if test="dictName != null and dictName != ''">
+			<if test="dictName != null and dictName != ''">
 				AND dict_name like '%'+#{dictName}+ '%'
 			</if>
 			<if test="status != null and status != ''">
@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 				and datediff(dd,create_time,#{params.endTime})>= 0
 			</if>
-	    </where>
+		</where>
 	</select>
 	
 	<select id="selectDictTypeAll" resultMap="SysDictTypeResult">

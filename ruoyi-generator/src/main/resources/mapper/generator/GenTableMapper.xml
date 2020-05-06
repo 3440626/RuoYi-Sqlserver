@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectDbTableList" parameterType="GenTable" resultMap="GenTableResult">
 		SELECT cast(D.NAME as nvarchar) as table_name,cast(F.VALUE as nvarchar) as table_comment,
-	    crdate as create_time,refdate as update_time FROM    SYSOBJECTS   D
+		crdate as create_time,refdate as update_time FROM    SYSOBJECTS   D
 		inner   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID
 		AND   F.MINOR_ID=0 AND   D.XTYPE='U' AND  D.NAME!='DTPROPERTIES'
 		AND D.NAME NOT IN (select table_name from gen_table)
@@ -81,13 +81,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectDbTableListByNames" resultMap="GenTableResult">
 		SELECT cast(D.NAME as nvarchar) as table_name,cast(F.VALUE as nvarchar) as table_comment,
-	    crdate as create_time,refdate as update_time FROM    SYSOBJECTS   D
+		crdate as create_time,refdate as update_time FROM    SYSOBJECTS   D
 		inner   JOIN   SYS.EXTENDED_PROPERTIES F   ON   D.ID=F.MAJOR_ID
 		AND   F.MINOR_ID=0 AND   D.XTYPE='U' AND  D.NAME!='DTPROPERTIES'
 		AND D.NAME in
-	    <foreach collection="array" item="name" open="(" separator="," close=")">
- 			#{name}
-        </foreach> 
+		<foreach collection="array" item="name" open="(" separator="," close=")">
+			#{name}
+		</foreach>
 	</select>
 	
 	<select id="selectTableByName" parameterType="String" resultMap="GenTableResult">

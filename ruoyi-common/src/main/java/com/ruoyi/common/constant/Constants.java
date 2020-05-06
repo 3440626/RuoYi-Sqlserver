@@ -31,16 +31,16 @@ public class Constants
      * 注销
      */
     public static final String LOGOUT = "Logout";
+    
+    /**
+     * 注册
+     */
+    public static final String REGISTER = "Register";
 
     /**
      * 登录失败
      */
     public static final String LOGIN_FAIL = "Error";
-
-    /**
-     * 自动去除表前缀
-     */
-    public static final String AUTO_REOMVE_PRE = "true";
 
     /**
      * 当前记录起始索引
@@ -61,6 +61,26 @@ public class Constants
      * 排序的方向 "desc" 或者 "asc".
      */
     public static final String IS_ASC = "isAsc";
+
+    /**
+     * 参数管理 cache name
+     */
+    public static final String SYS_CONFIG_CACHE = "sys-config";
+
+    /**
+     * 参数管理 cache key
+     */
+    public static final String SYS_CONFIG_KEY = "sys_config:";
+
+    /**
+     * 字典管理 cache name
+     */
+    public static final String SYS_DICT_CACHE = "sys-dict";
+
+    /**
+     * 字典管理 cache key
+     */
+    public static final String SYS_DICT_KEY = "sys_dict:";
 
     /**
      * 资源映射路径 前缀

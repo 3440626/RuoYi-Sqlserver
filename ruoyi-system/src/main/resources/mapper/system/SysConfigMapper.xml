@@ -41,22 +41,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectConfigList" parameterType="SysConfig" resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>
         <where>
-			<if test="configName != null and configName != ''">
-				AND config_name like '%'+#{configName}+ '%'
-			</if>
-			<if test="configType != null and configType != ''">
-				AND config_type = #{configType}
-			</if>
-			<if test="configKey != null and configKey != ''">
-				AND config_key like '%'+#{configKey}+ '%'
-			</if>
+            <if test="configName != null and configName != ''">
+                AND config_name like '%'+#{configName}+ '%'
+            </if>
+            <if test="configType != null and configType != ''">
+                AND config_type = #{configType}
+            </if>
+            <if test="configKey != null and configKey != ''">
+                AND config_key like '%'+#{configKey}+ '%'
+            </if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
                 and datediff(dd,#{params.beginTime},create_time)>= 0
             </if>
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 and datediff(dd,create_time,#{params.endTime})>= 0
             </if>
-		</where>
+        </where>
     </select>
     
     <select id="checkConfigKeyUnique" parameterType="String" resultMap="SysConfigResult">

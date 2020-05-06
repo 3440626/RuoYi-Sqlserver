@@ -68,7 +68,6 @@ public class ShutdownManager
         }
     }
 
-
     private void shutdownEhCacheManager()
     {
         try
