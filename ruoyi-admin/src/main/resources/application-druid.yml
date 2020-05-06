@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:sqlserver://sql.ctrlcloud.cn:1433;SelectMethod=cursor;DatabaseName=RuoYi_SqlServer
+                url: jdbc:sqlserver://127.0.0.1:1433;SelectMethod=cursor;DatabaseName=ry
                 username: sa
-                password: KOCUSSK98Vvc6i5y9eqh628
+                password: 123456
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
