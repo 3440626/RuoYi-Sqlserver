@@ -64,7 +64,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     public List<Ztree> roleDeptTreeData(SysRole role)
     {
         Long roleId = role.getRoleId();
-        List<Ztree> ztrees = new ArrayList<Ztree>();
+        List<Ztree> ztrees = new ArrayList<>();
         List<SysDept> deptList = selectDeptList(new SysDept());
         if (StringUtils.isNotNull(roleId))
         {
@@ -99,7 +99,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     public List<Ztree> initZtree(List<SysDept> deptList, List<String> roleDeptList)
     {
 
-        List<Ztree> ztrees = new ArrayList<Ztree>();
+        List<Ztree> ztrees = new ArrayList<>();
         boolean isCheck = StringUtils.isNotNull(roleDeptList);
         for (SysDept dept : deptList)
         {
@@ -144,7 +144,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     public boolean checkDeptExistUser(Long deptId)
     {
         int result = deptMapper.checkDeptExistUser(deptId);
-        return result > 0 ? true : false;
+        return result > 0;
     }
 
     /**
@@ -249,6 +249,17 @@ public class SysDeptServiceImpl implements ISysDeptService
     public SysDept selectDeptById(Long deptId)
     {
         return deptMapper.selectDeptById(deptId);
+    }
+
+    /**
+     * 根据ID查询所有子部门（正常状态）
+     *
+     * @param deptId 部门ID
+     * @return 子部门数
+     */
+    public int selectNormalChildrenDeptById(Long deptId)
+    {
+        return deptMapper.selectNormalChildrenDeptById(deptId);
     }
 
     /**
